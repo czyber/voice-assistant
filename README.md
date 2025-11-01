@@ -63,6 +63,14 @@ pytest tests
 
 We will add more integration coverage once every module has a shim implementation.
 
+### Manual audio check
+
+```bash
+python -m audio_input.microphone
+```
+
+Press Enter, speak for 5 seconds, and confirm `test_recording.wav` sounds clear.
+
 ## Need Help?
 
 - Interface questions → tag Tech Lead
