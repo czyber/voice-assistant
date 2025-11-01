@@ -1,0 +1,6 @@
+pyaudio
+openai
+spotipy
+anthropic
+pygame
+pytest

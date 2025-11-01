@@ -1,0 +1,14 @@
+{
+  "openai": {
+    "api_key": "sk-REPLACE-ME",
+    "organization": ""
+  },
+  "anthropic": {
+    "api_key": "claude-REPLACE-ME"
+  },
+  "spotify": {
+    "client_id": "YOUR-SPOTIFY-CLIENT-ID",
+    "client_secret": "YOUR-SPOTIFY-CLIENT-SECRET",
+    "redirect_uri": "http://localhost:8888/callback"
+  }
+}
