@@ -62,18 +62,14 @@ If PyAudio fails to build, revisit Step 0 and ensure the PortAudio headers are i
 
 ## 5. Verify the Installation
 
-1. **Unit tests (fast):**
-   ```bash
-   pytest tests
-   ```
-2. **Microphone sanity check (requires active virtual environment):**
+1. **Microphone sanity check (requires active virtual environment):**
    ```bash
    python -m audio_input.microphone
    ```
    - Press Enter when prompted.  
    - Speak normally for ~5 seconds.  
    - The script saves `audio_input/test_recording.wav`. Play it back with your OS audio player.
-3. **Playground demo (optional but recommended):**
+2. **Playground demo (optional but recommended):**
    ```bash
    python -m core.playground
    ```
