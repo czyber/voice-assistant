@@ -17,7 +17,7 @@ This walkthrough is intentionally explicit so every teammate—regardless of com
 
 ```bash
 cd ~/code  # or wherever you keep projects
-git clone git@github.com:YOUR-ORG/voice-assistant.git
+git clone git@github.com:czyber/voice-assistant.git
 cd voice-assistant
 ```
 
