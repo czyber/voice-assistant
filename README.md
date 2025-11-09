@@ -20,6 +20,10 @@ cp config.json config.local.json  # keep secrets out of git
 
 > Need help with Git? See `docs/git_workflow.md`.
 
+### Need Every Detail?
+
+Follow the numbered checklist in [`docs/setup.md`](docs/setup.md) for the extremely explicit version (prerequisites, exact commands, expected outputs, and troubleshooting tips). Treat it as the canonical onboarding doc when pairing with non-technical teammates.
+
 ## Pipeline Overview
 
 You speak → `audio_input` (Microphone) → `audio_output/stt` (Whisper STT) → `core` (LLM logic + tools) → `tools` (Spotify actions) → `audio_output/tts` (OpenAI TTS) → speakers.
@@ -70,6 +74,18 @@ python -m audio_input.microphone
 ```
 
 Press Enter, speak for 5 seconds, and confirm `test_recording.wav` sounds clear.
+
+## Logging (New!)
+
+Every subsystem now emits detailed, structured logs. Adjust them at runtime—no code changes required:
+
+| Env Var | Purpose | Example |
+| --- | --- | --- |
+| `VOICE_ASSISTANT_LOG_LEVEL` | Sets severity (`DEBUG`, `INFO`, `WARNING`, `ERROR`) | `export VOICE_ASSISTANT_LOG_LEVEL=DEBUG` |
+| `VOICE_ASSISTANT_LOG_FILE` | Mirrors logs to a file (directories auto-created) | `export VOICE_ASSISTANT_LOG_FILE=~/voice-assistant/logs/run.log` |
+| `VOICE_ASSISTANT_LOG_FORMAT` | Override format string if you prefer JSON/etc. | `export VOICE_ASSISTANT_LOG_FORMAT="%(asctime)s %(levelname)s %(message)s"` |
+
+Every log line carries `run=<id>` so two people can compare traces quickly while pairing.
 
 ## Need Help?
 

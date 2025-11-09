@@ -4,3 +4,5 @@ spotipy
 anthropic
 pygame
 pytest
+websocket-client
+elevenlabs

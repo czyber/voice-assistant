@@ -8,7 +8,7 @@ pieces together without surprises at the end of the sprint.
 
 import abc
 from dataclasses import dataclass
-from typing import Any, Dict, Optional
+from typing import Any, Dict, Optional, Generator
 
 
 @dataclass(frozen=True)
@@ -20,6 +20,21 @@ class AudioChunk:
     timestamp: float
     channels: int = 1
     sample_width: int = 2  # bytes per sample, defaults to 16-bit audio
+
+    @staticmethod
+    def from_chunks(chunks: list['AudioChunk']) -> 'AudioChunk':
+        """Combine multiple AudioChunks into a single AudioChunk."""
+        if not chunks:
+            raise ValueError("No chunks provided for combination.")
+
+        combined_data = b''.join(chunk.data for chunk in chunks)
+        return AudioChunk(
+            data=combined_data,
+            sample_rate=chunks[0].sample_rate,
+            timestamp=chunks[0].timestamp,
+            channels=chunks[0].channels,
+            sample_width=chunks[0].sample_width,
+        )
 
 
 @dataclass(frozen=True)
@@ -51,6 +66,15 @@ class ToolResult:
 
 class IAudioInput(abc.ABC):
     """Microphone adapters implement this interface."""
+
+    @abc.abstractmethod
+    def stream(self) -> Generator[AudioChunk, None, None]:
+        """
+        Yield AudioChunks from the microphone indefinitely.
+
+        Implementations should raise an exception if the microphone is
+        unavailable or streaming fails.
+        """
 
     @abc.abstractmethod
     def record(self, duration_seconds: float) -> AudioChunk:
