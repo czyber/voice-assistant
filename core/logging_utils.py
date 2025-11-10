@@ -34,6 +34,34 @@ class _ContextFilter(logging.Filter):
         return True
 
 
+class _ExtraFieldsFormatter(logging.Formatter):
+    """Formatter that includes extra fields from LogRecord in the output."""
+
+    # Standard LogRecord attributes that should not be treated as extra fields
+    _STANDARD_ATTRS = {
+        "name", "msg", "args", "created", "filename", "funcName", "levelname",
+        "levelno", "lineno", "module", "msecs", "message", "pathname", "process",
+        "processName", "relativeCreated", "thread", "threadName", "exc_info",
+        "exc_text", "stack_info", "run_id", "asctime"
+    }
+
+    def format(self, record: logging.LogRecord) -> str:
+        # First, format the standard message
+        formatted = super().format(record)
+        
+        # Collect extra fields (attributes not in standard set)
+        extra_fields = []
+        for key, value in record.__dict__.items():
+            if key not in self._STANDARD_ATTRS:
+                extra_fields.append(f"{key}={value}")
+        
+        # Append extra fields if any exist
+        if extra_fields:
+            formatted += " | " + " ".join(extra_fields)
+        
+        return formatted
+
+
 def _resolve_level(level: str | int) -> int:
     if isinstance(level, int):
         return level
@@ -55,7 +83,7 @@ def setup_logging(level: str | int | None = None) -> None:
 
     selected_level = level or os.getenv("VOICE_ASSISTANT_LOG_LEVEL", "INFO")
     log_level = _resolve_level(selected_level)
-    formatter = logging.Formatter(
+    formatter = _ExtraFieldsFormatter(
         os.getenv("VOICE_ASSISTANT_LOG_FORMAT", DEFAULT_FORMAT),
         os.getenv("VOICE_ASSISTANT_LOG_TIME_FORMAT", DEFAULT_TIME_FORMAT),
     )
